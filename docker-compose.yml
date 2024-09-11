@@ -1,0 +1,45 @@
+services:
+  # Servicio de MongoDB
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+    networks:
+      - app-network
+
+  # Servicio del backend
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rifa
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+
+  # Servicio del frontend
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3001:3000"  # El puerto 3001 de la máquina local se mapea al 3000 del contenedor
+    networks:
+      - app-network
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
