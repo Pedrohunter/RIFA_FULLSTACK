@@ -14,14 +14,15 @@ RUN npm install
 COPY . .
 
 # Ejecutar el build de la aplicación para producción
-RUN npm run build
+# RUN npm run build
 
-# Instalar 'serve' para servir la aplicación estática
-RUN npm install -g serve
+# # Instalar 'serve' para servir la aplicación estática
+# RUN npm install -g serve
 
-# Exponer el puerto 3000 para que se pueda acceder a la aplicación
+# Exponer el puerto 4000 para que se pueda acceder a la aplicación
 EXPOSE 3000
 
 # Comando para iniciar la aplicación usando 'serve'
-CMD ["npm", "start"]
-# CMD ["serve", "-s", "build"]
+# CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
+
